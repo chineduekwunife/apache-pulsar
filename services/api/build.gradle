@@ -1,0 +1,64 @@
+configurations {
+    jsondoclet
+
+    // we want embedded Jetty instead of Tomcat
+    compile.exclude module: "spring-boot-starter-tomcat"
+}
+
+ext {
+    javadocJsonDir = file("$buildDir/generated-javadoc-json")
+}
+
+buildscript {
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+group = 'com.novafutur.api'
+version = projectVersion
+sourceCompatibility = projectSourceCompatibility
+
+repositories {
+
+}
+
+dependencies {
+    compile("org.springframework.boot:spring-boot-starter-jetty")
+
+    compile('org.springframework.boot:spring-boot-starter-web')
+    compile('org.springframework.boot:spring-boot-starter-actuator')
+
+    // Swagger
+    compile("io.springfox:springfox-swagger2:${swaggerVersion}")
+    compile("io.springfox:springfox-swagger-ui:${swaggerVersion}")
+
+    // AKKA
+    compile("com.typesafe.akka:akka-actor_2.12:${akkaVersion}")
+
+    // LOMBOK
+    compileOnly("org.projectlombok:lombok:${lombokVersion}")
+    annotationProcessor("org.projectlombok:lombok:${lombokVersion}")
+
+    // TEST
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+
+dependencyManagement {
+    imports {
+    }
+}
+
+task copyTestResources(type: Copy) {
+    from "${projectDir}/src/test/resources"
+    into "${buildDir}/classes/java/test/resources"
+}

@@ -1,0 +1,3 @@
+rootProject.name = 'novafutur'
+
+include 'services:api'

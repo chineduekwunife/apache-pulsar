@@ -1,0 +1,15 @@
+plugins {
+    id "idea"
+}
+
+allprojects {
+    
+}
+
+subprojects {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        jcenter()
+    }
+}
