@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
 
 @RestController
 @RequestMapping(WebService.RESOURCE)
@@ -22,7 +21,7 @@ public class WebService {
 
     @GetMapping("/{number}")
     public ResponseEntity test(@PathVariable("number") String number) {
-        BigDecimal value = new BigDecimal(number);
+        Integer value = Integer.valueOf(number);
 
         Object result = jobService.compute(value);
 
