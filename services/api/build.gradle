@@ -45,12 +45,18 @@ dependencies {
     // AKKA
     compile("com.typesafe.akka:akka-actor_2.12:${akkaVersion}")
 
+    // JOOL
+    compile("org.jooq:jool-java-8:${joolVersion}")
+
     // LOMBOK
     compileOnly("org.projectlombok:lombok:${lombokVersion}")
     annotationProcessor("org.projectlombok:lombok:${lombokVersion}")
 
     // TEST
     testCompile('org.springframework.boot:spring-boot-starter-test')
+    testCompile("org.springframework.restdocs:spring-restdocs-mockmvc")
+    testCompile("capital.scalable:spring-auto-restdocs-core:${springautorestdocscoreVersion}")
+    jsondoclet("capital.scalable:spring-auto-restdocs-json-doclet:${springautorestdocsjsondocletVersion}")
 }
 
 dependencyManagement {

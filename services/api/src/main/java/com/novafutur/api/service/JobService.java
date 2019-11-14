@@ -20,7 +20,7 @@ import static com.novafutur.api.message.akka.messages.SupervisorMessages.GetAsyn
 import static com.novafutur.api.message.akka.messages.AsyncMessages.Execute;
 
 /**
- * A service for returning the compute value from cache or sending the computation to an actor to be done async and Python code.
+ * A service for returning the compute value from cache or sending the computation to an actor to be done async.
  *
  * @author Chinedu Ekwunife
  */
@@ -50,12 +50,14 @@ public class JobService {
         }
 
         if (cache.containsKey(number)) {
-            logger.debug("Result for {} exists in cache", number);
+            logger.warn("Result for {} exists in cache", number);
 
             return cache.get(number);
         }
 
         //send message to async actor
+        logger.warn("Result for {} does not exist in cache, calculating asynchronously", number);
+
         async.tell(new Execute(o -> computeAsync(number)), noSender());
 
         //return default message
@@ -64,8 +66,6 @@ public class JobService {
 
     private void computeAsync(Integer number) {
         //Compute the function in the background and store result in cache
-        logger.debug("Result for {} does not exist in cache, calculating asynchronously", number);
-
         Integer iterations = collatzService.computeCollatz(number);
 
         cache.putIfAbsent(number, iterations);

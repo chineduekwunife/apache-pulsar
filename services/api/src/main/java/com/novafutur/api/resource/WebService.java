@@ -20,7 +20,7 @@ public class WebService {
     private final JobService jobService;
 
     @GetMapping("/{number}")
-    public ResponseEntity test(@PathVariable("number") String number) {
+    public ResponseEntity compute(@PathVariable("number") String number) {
         Integer value = Integer.valueOf(number);
 
         Object result = jobService.compute(value);
