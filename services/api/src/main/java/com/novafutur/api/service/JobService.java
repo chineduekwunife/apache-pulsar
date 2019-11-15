@@ -50,7 +50,7 @@ public class JobService {
         }
 
         if (cache.containsKey(number)) {
-            logger.warn("Result for {} exists in cache", number);
+            logger.info("Result for {} exists in cache", number);
 
             return cache.get(number);
         }
