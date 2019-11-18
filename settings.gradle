@@ -1,3 +1,4 @@
-rootProject.name = 'novafutur'
+rootProject.name = 'pulsar'
 
-include 'services:api'
+include 'services:producer',
+        'services:consumer'

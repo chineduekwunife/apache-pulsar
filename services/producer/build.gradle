@@ -1,0 +1,92 @@
+configurations {
+    jsondoclet
+
+    // we want embedded Jetty instead of Tomcat
+    compile.exclude module: "spring-boot-starter-tomcat"
+}
+
+ext {
+    javadocJsonDir = file("$buildDir/generated-javadoc-json")
+}
+
+buildscript {
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+group = 'com.pulsar.producer'
+version = projectVersion
+sourceCompatibility = projectSourceCompatibility
+
+repositories {
+
+}
+
+dependencies {
+    compile("org.springframework.boot:spring-boot-starter-jetty")
+
+    compile('org.springframework.boot:spring-boot-starter-web')
+    compile('org.springframework.boot:spring-boot-starter-actuator')
+
+    // Swagger
+    compile("io.springfox:springfox-swagger2:${swaggerVersion}")
+    compile("io.springfox:springfox-swagger-ui:${swaggerVersion}")
+
+    // LOMBOK
+    compileOnly("org.projectlombok:lombok:${lombokVersion}")
+    annotationProcessor("org.projectlombok:lombok:${lombokVersion}")
+    
+    // PULSAR
+    compile group: 'org.apache.pulsar', name: 'pulsar-client', version: pulsarVersion
+
+    // TEST
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+    testCompile("org.springframework.restdocs:spring-restdocs-mockmvc")
+    testCompile("capital.scalable:spring-auto-restdocs-core:${springautorestdocscoreVersion}")
+    jsondoclet("capital.scalable:spring-auto-restdocs-json-doclet:${springautorestdocsjsondocletVersion}")
+}
+
+dependencyManagement {
+    imports {
+    }
+}
+
+def dockerBuild(String target, String port) {
+    exec {
+        executable "docker"
+        args "build", "-t", "localhost:$port/pulsar-producer", target
+    }
+}
+
+def dockerPush(String target) {
+    exec {
+        executable "docker"
+        args "push", target
+    }
+}
+
+def dockerSystemPrune() {
+    exec {
+        executable "docker"
+        args "system", "prune", "-f"
+    }
+}
+
+task deployDocker(dependsOn: bootJar) {
+    String port = project.hasProperty('port') ? project.property('port') : '5000'
+    doLast {
+        dockerBuild(".", port)
+        dockerPush("localhost:$port/pulsar-producer")
+        dockerSystemPrune()
+    }
+}
