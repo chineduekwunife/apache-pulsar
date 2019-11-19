@@ -36,9 +36,4 @@ public class SampleSubscriber extends PulsarSubscriber {
     public void process(Message msg) {
         log.info("Message received: {}", new String(msg.getData()));
     }
-
-    @Override
-    public Boolean shouldBeStarted() {
-        return true;
-    }
 }

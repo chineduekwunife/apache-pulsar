@@ -1,22 +1,15 @@
 package com.pulsar.consumer.service;
 
-import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.pulsar.client.api.Consumer;
 import org.apache.pulsar.client.api.Message;
 
 import static java.util.Objects.nonNull;
 
-@Slf4j
-@RequiredArgsConstructor
 public abstract class PulsarSubscriber implements Runnable {
 
     public abstract Consumer consumer();
-
     public abstract void process(Message record);
-
-    public abstract Boolean shouldBeStarted();
 
     @SneakyThrows
     @SuppressWarnings("unchecked")
@@ -33,7 +26,6 @@ public abstract class PulsarSubscriber implements Runnable {
                 consumer().acknowledge(msg);
             } catch (Exception e) {
                 // Message failed to process, redeliver later
-                log.error("Unexpected error: {}", e);
                 consumer().negativeAcknowledge(msg);
             }
         }
@@ -45,10 +37,22 @@ public abstract class PulsarSubscriber implements Runnable {
 
         if (nonNull(consumer) && consumer.isConnected()) {
             // start listening for messages
-            new Thread(this).start();
+            Thread thread = new Thread(this);
+            thread.setName(consumerId() + "-" + thread.getName());
+            thread.start();
         } else {
             throw new IllegalStateException("Unable to connect to pulsar, retrying...");
         }
+    }
+
+    public Boolean shouldBeStarted() {
+        // can be overridden in subscriber class
+        return true;
+    }
+
+    public String consumerId() {
+        // can be overridden in subscriber class
+        return this.getClass().getSimpleName();
     }
 
 }

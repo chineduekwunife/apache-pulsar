@@ -6,6 +6,8 @@
 /bin/
 **/bin
 
+/integration/data/
+
 ### STS ###
 .apt_generated
 .classpath
