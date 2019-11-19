@@ -43,3 +43,5 @@ output in `pulsar-consumer` logs
 ```
 curl -X GET "http://localhost:8081/ws/pulsar" -H "accept: */*"
 ```
+
+- **Step 6**. When you make code changes to `pulsar-producer` or `pulsar-consumer`, redeploy the respective container by following Step 3 above. Observe from the logs that Watchtower will stop the existing container and automatically deploy a new one containing your code changes.

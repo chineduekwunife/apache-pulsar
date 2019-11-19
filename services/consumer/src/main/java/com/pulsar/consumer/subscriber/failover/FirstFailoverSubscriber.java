@@ -11,8 +11,8 @@ import org.apache.pulsar.client.api.SubscriptionType;
 import org.springframework.stereotype.Component;
 
 import static java.util.Objects.isNull;
-import static com.pulsar.consumer.constants.Topic.MY_TOPIC;
-import static com.pulsar.consumer.constants.Subscription.FAILOVER_SUBSCRIPTION;
+import static com.pulsar.model.constants.Topic.MY_TOPIC;
+import static com.pulsar.model.constants.Subscription.FAILOVER_SUBSCRIPTION;
 
 /**
  * Multiple consumer will be able to use the same subscription name but only 1 consumer will receive the messages.

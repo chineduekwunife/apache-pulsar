@@ -1,4 +1,5 @@
 rootProject.name = 'pulsar'
 
 include 'services:producer',
-        'services:consumer'
+        'services:consumer',
+        'clients:pulsar-models'

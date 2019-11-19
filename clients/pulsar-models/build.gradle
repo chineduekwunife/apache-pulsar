@@ -1,0 +1,53 @@
+configurations {
+}
+
+buildscript {
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+apply plugin: "maven-publish"
+
+group = 'com.pulsar.model'
+version = projectVersion
+sourceCompatibility = projectSourceCompatibility
+
+repositories {
+}
+
+dependencies {
+    // LOMBOK
+    compileOnly("org.projectlombok:lombok:${lombokVersion}")
+    annotationProcessor("org.projectlombok:lombok:${lombokVersion}")
+
+    // TEST
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+
+jar {
+    enabled = true
+}
+
+bootJar {
+    enabled = false
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId = 'com.pulsar.model'
+            artifactId = 'pulsar-model'
+            version = projectVersion
+            from components.java
+        }
+    }
+}

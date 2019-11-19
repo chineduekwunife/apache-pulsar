@@ -49,6 +49,9 @@ dependencies {
     // PULSAR
     compile group: 'org.apache.pulsar', name: 'pulsar-client', version: pulsarVersion
 
+    // External API
+    implementation project(":clients:pulsar-models")
+
     // TEST
     testCompile('org.springframework.boot:spring-boot-starter-test')
     testCompile("org.springframework.restdocs:spring-restdocs-mockmvc")
