@@ -1,4 +1,4 @@
-package com.pulsar.consumer.service;
+package com.pulsar.consumer.subscriber;
 
 import lombok.SneakyThrows;
 import org.apache.pulsar.client.api.Consumer;
@@ -31,8 +31,8 @@ public abstract class PulsarSubscriber implements Runnable {
         }
     }
 
+    //ensure consumer connection can be established
     public void connect() {
-        //ensure consumer connection can be established
         Consumer consumer = consumer();
 
         if (nonNull(consumer) && consumer.isConnected()) {
@@ -41,17 +41,17 @@ public abstract class PulsarSubscriber implements Runnable {
             thread.setName(consumerId() + "-" + thread.getName());
             thread.start();
         } else {
-            throw new IllegalStateException("Unable to connect to pulsar, retrying...");
+            throw new IllegalStateException("Unable to connect to pulsar");
         }
     }
 
+    // can be overridden in subscriber class
     public Boolean shouldBeStarted() {
-        // can be overridden in subscriber class
         return true;
     }
 
+    // can be overridden in subscriber class
     public String consumerId() {
-        // can be overridden in subscriber class
         return this.getClass().getSimpleName();
     }
 

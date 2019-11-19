@@ -1,5 +1,6 @@
-package com.pulsar.consumer.service;
+package com.pulsar.consumer.init;
 
+import com.pulsar.consumer.subscriber.PulsarSubscriber;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.event.ApplicationReadyEvent;

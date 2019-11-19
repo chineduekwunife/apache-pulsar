@@ -1,19 +1,29 @@
-package com.pulsar.consumer.service;
+package com.pulsar.consumer.subscriber.shared;
 
+import com.pulsar.consumer.subscriber.PulsarSubscriber;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.pulsar.client.api.Consumer;
 import org.apache.pulsar.client.api.Message;
 import org.apache.pulsar.client.api.PulsarClient;
+import org.apache.pulsar.client.api.SubscriptionType;
 import org.springframework.stereotype.Component;
 
 import static java.util.Objects.isNull;
+import static com.pulsar.consumer.constants.Topic.MY_TOPIC;
+import static com.pulsar.consumer.constants.Subscription.SHARED_SUBSCRIPTION;
 
+/**
+ * Multiple consumer will be able to use the same subscription name and the messages will be dispatched according to
+ * a round-robin rotation between the connected consumers.
+ * <p>
+ * In this mode, the consumption order is not guaranteed.
+ */
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class SampleSubscriber extends PulsarSubscriber {
+public class SecondSharedSubscriber extends PulsarSubscriber {
 
     private final PulsarClient pulsarClient;
 
@@ -24,8 +34,9 @@ public class SampleSubscriber extends PulsarSubscriber {
     public Consumer consumer() {
         if (isNull(consumer)) {
             consumer = pulsarClient.newConsumer()
-                    .topic("my-topic")
-                    .subscriptionName("my-subscription")
+                    .topic(MY_TOPIC)
+                    .subscriptionName(SHARED_SUBSCRIPTION)
+                    .subscriptionType(SubscriptionType.Shared)
                     .subscribe();
         }
 
