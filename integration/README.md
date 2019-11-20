@@ -6,7 +6,7 @@ Simulates publish subscribe use cases in Apache Pulsar. Also provides easy redep
 docker-compose -f pulsar.yml pull
 ```
 
-### Clear Dangling Docker images (run from time to tome)
+### Clear Dangling Docker images (run from time to time)
 ```
 docker volume rm $(docker volume ls -qf dangling=true)
 docker system prune -f
