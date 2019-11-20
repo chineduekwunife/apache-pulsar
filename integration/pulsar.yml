@@ -49,7 +49,9 @@ services:
     ports:
       - "80:80"
     environment:
-      - SERVICE_URL=http://pulsar:8080
+      SERVICE_URL: http://pulsar:8080
+    networks:
+      - docker-network
 
   pulsar-producer:
     image: 127.0.0.1:5000/pulsar-producer
