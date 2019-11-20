@@ -18,6 +18,8 @@ import static java.util.Objects.isNull;
 
 /**
  * Can subscribe to different topics.
+ *
+ * @author Chinedu Ekwunife
  */
 @Slf4j
 @Component

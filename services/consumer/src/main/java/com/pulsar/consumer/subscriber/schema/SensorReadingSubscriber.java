@@ -18,6 +18,8 @@ import static java.util.Objects.isNull;
 
 /**
  * Demonstrates a subscriber for custom java object, in this case an object of type SensorReading
+ *
+ * @author Chinedu Ekwunife
  */
 @Slf4j
 @Component

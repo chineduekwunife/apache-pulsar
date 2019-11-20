@@ -17,6 +17,8 @@ import static com.pulsar.model.constants.Subscription.EXCLUSIVE_SUBSCRIPTION;
 
 /**
  * There can be only 1 consumer on the same topic with the same subscription name.
+ *
+ * @author Chinedu Ekwunife
  */
 @Slf4j
 @Component

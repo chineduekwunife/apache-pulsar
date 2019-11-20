@@ -23,6 +23,8 @@ import static com.pulsar.model.constants.Subscription.FAILOVER_SUBSCRIPTION;
  * In case of partitioned topics, the ordering is guaranteed on a per-partition basis. The partitions assignments will
  * be split across the available consumers. On each partition, at most one consumer will be active at a given point
  * in time.
+ *
+ * @author Chinedu Ekwunife
  */
 @Slf4j
 @Component

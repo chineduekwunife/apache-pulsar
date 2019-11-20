@@ -34,7 +34,6 @@ public class WebService {
             producerService.sendMessage(new SensorReading(2.0F), SENSOR_TOPIC, JSONSchema.of(SensorReading.class));
             producerService.sendMessage("My message", MY_TOPIC, Schema.STRING);
             producerService.sendMessage("My second message", MY_SECOND_TOPIC, Schema.STRING);
-
         }
 
         return ResponseEntity.ok("");

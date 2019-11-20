@@ -6,6 +6,11 @@ import org.apache.pulsar.client.api.Message;
 
 import static java.util.Objects.nonNull;
 
+/**
+ * Generic class to be extended by all subscribers to Apache Pulsar.
+ *
+ * @author Chinedu Ekwunife
+ */
 public abstract class PulsarSubscriber implements Runnable {
 
     public abstract Consumer consumer();

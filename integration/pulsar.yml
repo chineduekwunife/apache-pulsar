@@ -24,8 +24,8 @@ services:
     image: apachepulsar/pulsar
     container_name: pulsar
     hostname: pulsar
-    volumes:
-      - ${PWD}/data:/pulsar/data
+#    volumes:
+#      - ${PWD}/data:/pulsar/data
     environment:
       ZK_HOST: zk:2181
       PULSAR_MEM: " -Xms512m -Xmx512m -XX:MaxDirectMemorySize=1g"
@@ -38,6 +38,7 @@ services:
     ports:
       - "6650:6650"
       - "8080:8080"
+    restart: always
     networks:
       - docker-network
 

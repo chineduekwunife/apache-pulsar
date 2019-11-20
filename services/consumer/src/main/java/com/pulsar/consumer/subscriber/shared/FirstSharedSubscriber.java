@@ -19,6 +19,8 @@ import static com.pulsar.model.constants.Subscription.SHARED_SUBSCRIPTION;
  * a round-robin rotation between the connected consumers.
  * <p>
  * In this mode, the consumption order is not guaranteed.
+ *
+ * @author Chinedu Ekwunife
  */
 @Slf4j
 @Component

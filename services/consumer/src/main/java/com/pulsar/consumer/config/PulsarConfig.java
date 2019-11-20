@@ -9,6 +9,11 @@ import org.springframework.retry.support.RetryTemplate;
 import org.springframework.retry.backoff.FixedBackOffPolicy;
 import org.springframework.retry.policy.SimpleRetryPolicy;
 
+/**
+ * Configuration for Apache Pulsar.
+ *
+ * @author Chinedu Ekwunife
+ */
 @Configuration
 public class PulsarConfig {
 
