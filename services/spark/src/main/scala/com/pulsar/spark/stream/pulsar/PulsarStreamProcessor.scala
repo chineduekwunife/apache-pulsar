@@ -12,7 +12,7 @@ import org.apache.spark.streaming.dstream.ReceiverInputDStream
 import org.apache.spark.streaming.{Seconds, StreamingContext}
 
 /**
-  * Attaches a pipe to Pulsar's topic(s) (streaming-topic in this example) so that any data sent to the topic(s) can be processed in realtime by Spark.
+  * Attaches pipe(s) to Pulsar's topic(s) (streaming-topic in this example) so that any data sent to the topic(s) can be processed in realtime by Spark.
   *
   * To test:
   * 1. Install Apache Spark - see https://www.tutorialkart.com/apache-spark/how-to-install-spark-on-mac-os/

@@ -52,7 +52,7 @@ curl -X GET "http://localhost:8081/ws/pulsar"
 
 ### Running the Apache Pulsar - Apache Spark Streaming Demo
 
-Aim is to attach a pipe to Pulsar's topic(s) (streaming-topic in this example) so that any data sent to the topic(s) can be processed in realtime by Spark.
+Aim is to attach pipe(s) to Pulsar's topic(s) (streaming-topic in this example) so that any data sent to the topic(s) can be processed in realtime by Spark.
 
 - **Step 1**. Stop any running docker containers
 ```
