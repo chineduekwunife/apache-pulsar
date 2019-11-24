@@ -11,8 +11,4 @@ This project uses Lombok annotations to reduce boiler place code, which requires
 
 3.) Intellij IDEA -> Preferences -> Plugins -> Browse Repositories-> Search for "Lombok"-> install plugin -> Apply and restart IDEA
 
-### TODO
-1. Configure pulsar to use external zookeeper
-2. Spark streaming with Apache Pulsar ???
-
 

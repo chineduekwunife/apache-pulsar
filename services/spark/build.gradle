@@ -1,0 +1,46 @@
+plugins {
+    id 'scala'
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '5.2.0'
+}
+
+group = 'com.pulsar.spark'
+version = projectVersion
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+// The provided configuration behaves the same as the sbt "provided" keyword which will cause jars to be
+// excluded from assembled fat-jar
+configurations {
+    provided
+    compile.extendsFrom provided
+}
+
+dependencies {
+    // SCALA
+    compile 'org.scala-lang:scala-library:2.11.12'
+
+    // SPARK
+    provided 'org.apache.spark:spark-sql_2.11:2.4.4'
+
+    // SPARK STREAMING
+    compile 'org.apache.spark:spark-streaming_2.11:2.4.4'
+    compile("org.apache.pulsar:pulsar-spark:${pulsarVersion}")
+
+    // PULSAR
+    compile group: 'org.apache.pulsar', name: 'pulsar-client', version: pulsarVersion
+    
+    // External API
+    implementation project(":clients:pulsar-models")
+
+    // TEST
+    testImplementation 'org.scalatest:scalatest_2.12:3.0.5'
+    testImplementation 'junit:junit:4.12'
+}
+
+shadowJar {
+    zip64 true
+}

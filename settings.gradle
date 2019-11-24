@@ -2,4 +2,5 @@ rootProject.name = 'pulsar'
 
 include 'services:producer',
         'services:consumer',
+        'services:spark',
         'clients:pulsar-models'

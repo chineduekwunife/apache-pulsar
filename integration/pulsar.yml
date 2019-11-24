@@ -11,15 +11,6 @@ services:
     networks:
       - docker-network
 
-  zk:
-    image: zookeeper:3.4.14
-    container_name: zk
-    hostname: zk
-    ports:
-      - "2181:2181"
-    networks:
-      - docker-network
-
   pulsar:
     image: apachepulsar/pulsar
     container_name: pulsar
@@ -27,14 +18,11 @@ services:
 #    volumes:
 #      - ${PWD}/data:/pulsar/data
     environment:
-      ZK_HOST: zk:2181
       PULSAR_MEM: " -Xms512m -Xmx512m -XX:MaxDirectMemorySize=1g"
     command: >
       /bin/bash -c
       "bin/apply-config-from-env.py conf/standalone.conf
       && bin/pulsar standalone"
-    depends_on:
-      - zk
     ports:
       - "6650:6650"
       - "8080:8080"
@@ -59,6 +47,8 @@ services:
     container_name: pulsar-producer
     ports:
       - "8081:8081"
+    environment:
+      PULSAR_SERVICE_URL: pulsar://pulsar:6650
     depends_on:
       - pulsar
     networks:
@@ -69,6 +59,8 @@ services:
     container_name: pulsar-consumer
     ports:
       - "8082:8082"
+    environment:
+      PULSAR_SERVICE_URL: pulsar://pulsar:6650
     depends_on:
       - pulsar
     networks:

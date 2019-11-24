@@ -19,7 +19,7 @@ public class PulsarConfig {
 
     @Bean
     @SneakyThrows
-    public PulsarClient pulsarClient(@Value("${pulsar.serviceUrl}") String serviceUrl) {
+    public PulsarClient pulsarClient(@Value("${pulsar.service.url}") String serviceUrl) {
         return PulsarClient.builder()
                 .serviceUrl(serviceUrl)
                 .build();
