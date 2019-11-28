@@ -1,0 +1,25 @@
+version: '3'
+services:
+
+
+# instances for EU cluster
+
+  zk-eu:
+    hostname: zk-eu
+    container_name: zk-eu
+    image: apachepulsar/pulsar:2.4.1
+    command: >
+      /bin/bash -c
+      "bin/apply-config-from-env.py conf/zookeeper.conf
+      && bin/pulsar zookeeper"
+    environment:
+      ZOOKEEPER_SERVERS: zk-eu
+    ports:
+      - "2181"
+      - "8000"
+    networks:
+      - datacenter-network
+
+networks:
+  datacenter-network:
+    external: true
