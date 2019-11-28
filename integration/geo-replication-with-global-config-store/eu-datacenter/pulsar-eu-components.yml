@@ -1,0 +1,51 @@
+version: '3'
+services:
+
+# instances for EU cluster
+
+  bk-eu:
+    hostname: bk-eu
+    container_name: bk-eu
+    image: apachepulsar/pulsar:2.4.1
+    ports:
+      - "8000"
+    command: >
+      /bin/bash -c
+      "bin/apply-config-from-env.py conf/bookkeeper.conf
+      && bin/pulsar bookie"
+    environment:
+      clusterName: cluster-eu
+      zkServers: zk-global:2181/cluster-eu
+    #      advertisedAddress: bk-eu:3181
+    #      numAddWorkerThreads: 8
+    #      useHostNameAsBookieID: "true"
+    networks:
+      - datacenter-network
+
+  broker-eu:
+    hostname: broker-eu
+    container_name: broker-eu
+    image: apachepulsar/pulsar:2.4.1
+    command: >
+      /bin/bash -c
+      "bin/apply-config-from-env.py conf/broker.conf
+      && bin/pulsar broker"
+    ports:
+      - "8080"
+      - "6650"
+    environment:
+      clusterName: cluster-eu
+      zookeeperServers: zk-global:2181/cluster-eu
+      configurationStoreServers: zk-global:2181
+      managedLedgerDefaultEnsembleSize: 1     # set to match the number of bookeepers in the cluster
+      managedLedgerDefaultWriteQuorum: 1      # set to match the number of bookeepers in the cluster
+      managedLedgerDefaultAckQuorum: 1        # set to match the number of bookeepers in the cluster
+      bookkeeperClientRegionawarePolicyEnabled: "true"
+    #      bookkeeperClientReorderReadSequenceEnabled: "true"
+    #      webSocketServiceEnabled: "true"
+    networks:
+      - datacenter-network
+
+networks:
+  datacenter-network:
+    external: true

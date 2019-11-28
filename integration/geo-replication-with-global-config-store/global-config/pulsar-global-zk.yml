@@ -1,0 +1,23 @@
+version: '3'
+services:
+
+#  Global configuration zookeeper
+  zk-global:
+    hostname: zk-global
+    container_name: zk-global
+    image: apachepulsar/pulsar:2.4.1
+    command: >
+      /bin/bash -c
+      "bin/apply-config-from-env.py conf/zookeeper.conf
+      && bin/pulsar zookeeper"
+    environment:
+      ZOOKEEPER_SERVERS: zk-global
+    ports:
+      - "2181"
+      - "8000"
+    networks:
+      - datacenter-network
+
+networks:
+  datacenter-network:
+    external: true

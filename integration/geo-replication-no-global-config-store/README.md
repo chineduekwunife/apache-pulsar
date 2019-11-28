@@ -14,7 +14,7 @@ docker system prune -f
 
 ### Running the Apache Pulsar Demo
 
-- **Step 1**. Create a network which will be used by both data-centers to communicate
+- **Step 1**. Create a network which will be used by the data-centers to communicate
 
 ```
 docker network create datacenter-network
@@ -55,16 +55,40 @@ docker exec -it zk-eu bin/pulsar initialize-cluster-metadata \
 - **Step 4**. Start `US` and `EU` cluster components
 
 ```
+cd geo-replication-with-no-global-store
 cd us-datacenter
 docker-compose -f pulsar-us-components.yml up
 ```
 
 ```
+cd geo-replication-with-no-global-store
 cd eu-datacenter
 docker-compose -f pulsar-eu-components.yml up
 ```
 
-- **Step 5**. Prepare the broker clients on each cluster to target the correct broker. This is required for testing pub-sub
+- **Step 5**. Since there is no global configuration store for the two clusters, they don't know each other at this moment. 
+We need to create clusters on each cluster to tell a cluster how it can access the other two clusters. 
+Create cluster-eu on cluster-us and cluster-us and cluster-eu.
+
+```
+docker exec -it broker-us bin/pulsar-admin clusters create --url http://broker-eu:8080 --broker-url pulsar://broker-eu:6650 cluster-eu
+
+docker exec -it broker-eu bin/pulsar-admin clusters create --url http://broker-us:8080 --broker-url pulsar://broker-us:6650 cluster-us
+```
+
+- **Step 6**. Create Tenants and Namespaces. Since we don't setup a global configuration store for three clusters, 
+these two clusters don't share tenants and namespace policies, so you have to create the tenants and namespaces on all 
+two clusters.
+
+```
+docker exec -it broker-us bin/pulsar-admin tenants create my-tenant --allowed-clusters cluster-us,cluster-eu
+docker exec -it broker-us bin/pulsar-admin namespaces create my-tenant/my-namespace --clusters cluster-us,cluster-eu
+
+docker exec -it broker-eu bin/pulsar-admin tenants create my-tenant --allowed-clusters cluster-us,cluster-eu
+docker exec -it broker-eu bin/pulsar-admin namespaces create my-tenant/my-namespace --clusters cluster-us,cluster-eu
+```
+
+- **Step 7**. Prepare the broker clients on each cluster to target the correct broker. This is required for testing pub-sub
 
 ```
 docker exec -it broker-us /bin/bash
@@ -80,28 +104,6 @@ cat conf/client.conf
 exit
 ```
 
-- **Step 6**. Since there is no global configuration store for the two clusters, they don't know each other at this moment. 
-We need to create clusters on each cluster to tell a cluster how it can access the other two clusters. 
-Create cluster-eu on cluster-us and cluster-us and cluster-eu.
-
-```
-docker exec -it broker-us bin/pulsar-admin clusters create --url http://broker-eu:8080 --broker-url pulsar://broker-eu:6650 cluster-eu
-
-docker exec -it broker-eu bin/pulsar-admin clusters create --url http://broker-us:8080 --broker-url pulsar://broker-us:6650 cluster-us
-```
-
-- **Step 7**. Create Tenants and Namespaces. Since we don't setup a global configuration store for three clusters, 
-these two clusters don't share tenants and namespace policies, so you have to create the tenants and namespaces on all 
-two clusters.
-
-```
-docker exec -it broker-us bin/pulsar-admin tenants create my-tenant --allowed-clusters cluster-us,cluster-eu
-docker exec -it broker-us bin/pulsar-admin namespaces create my-tenant/my-namespace --clusters cluster-us,cluster-eu
-
-docker exec -it broker-eu bin/pulsar-admin tenants create my-tenant --allowed-clusters cluster-us,cluster-eu
-docker exec -it broker-eu bin/pulsar-admin namespaces create my-tenant/my-namespace --clusters cluster-us,cluster-eu
-```
-
 - **Step 8**. Verify messages send and receive. In cluster-eu, create a subscription for the test topic, which will wait to receive messages from cluster-us
 
 In cluster-eu, listen for messages sent to target tenant/namespace/topic from cluster-us
@@ -110,7 +112,7 @@ docker exec -it broker-eu bin/pulsar-client consume -s "sub-test" my-tenant/my-n
 ```
 
 
-In cluster-us, produce message to the target target tenant/namespace/topic
+In cluster-us, produce message to the target tenant/namespace/topic
 ```
 docker exec -it broker-us bin/pulsar-client produce  my-tenant/my-namespace/my-topic  --messages "hello-from-us" -n 10
 ```
