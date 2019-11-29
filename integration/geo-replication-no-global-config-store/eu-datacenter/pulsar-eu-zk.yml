@@ -14,9 +14,7 @@ services:
       && bin/pulsar zookeeper"
     environment:
       ZOOKEEPER_SERVERS: zk-eu
-    ports:
-      - "2181"
-      - "8000"
+    expose: [2181, 8000]
     networks:
       - datacenter-network
 

@@ -7,8 +7,7 @@ services:
     hostname: bk-eu
     container_name: bk-eu
     image: apachepulsar/pulsar:2.4.1
-    ports:
-      - "8000"
+    expose: [8000]
     command: >
       /bin/bash -c
       "bin/apply-config-from-env.py conf/bookkeeper.conf
@@ -30,9 +29,7 @@ services:
       /bin/bash -c
       "bin/apply-config-from-env.py conf/broker.conf
       && bin/pulsar broker"
-    ports:
-      - "8080"
-      - "6650"
+    expose: [8080, 6650]
     environment:
       clusterName: cluster-eu
       zookeeperServers: zk-global:2181/cluster-eu
