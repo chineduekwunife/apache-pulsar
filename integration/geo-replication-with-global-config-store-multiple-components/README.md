@@ -88,7 +88,7 @@ cat conf/client.conf
 exit
 ```
 
-- **Step 6**. Verify messages send and receive. In cluster-eu, create a subscription for the test topic, which will wait to receive messages from cluster-us
+- **Step 6**. Verify messages send and receive. In cluster-eu, create a subscription for the target topic, which will wait to receive messages from cluster-us
 
 In cluster-eu, listen for messages sent to target tenant/namespace/topic from cluster-us. If you have prepared the broker clients in Step 5, do:
 ```

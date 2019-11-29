@@ -70,7 +70,7 @@ docker-compose -f pulsar-eu-components.yml up
 
 - **Step 5**. Since there is no global configuration store for the two clusters, they don't know each other at this moment. 
 We need to create clusters on each cluster to tell a cluster how it can access the other clusters. 
-Create cluster-eu on cluster-us and cluster-us and cluster-eu.
+Create cluster-eu on cluster-us and cluster-us on cluster-eu.
 
 ```
 docker exec -it broker-us bin/pulsar-admin clusters create --url http://broker-eu:8080 --broker-url pulsar://broker-eu:6650 cluster-eu
@@ -79,7 +79,7 @@ docker exec -it broker-eu bin/pulsar-admin clusters create --url http://broker-u
 ```
 
 - **Step 6**. Create Tenants and Namespaces. Since we don't setup a global configuration store for the clusters, 
-the clusters don't share tenants and namespace policies, so you have to create the tenants and namespaces on all 
+the clusters don't share tenants and namespace policies, so we have to create the tenants and namespaces on all 
 clusters.
 
 ```
@@ -107,7 +107,7 @@ cat conf/client.conf
 exit
 ```
 
-- **Step 8**. Verify messages send and receive. In cluster-eu, create a subscription for the test topic, which will wait to receive messages from cluster-us
+- **Step 8**. Verify messages send and receive. In cluster-eu, create a subscription for the target topic, which will wait to receive messages from cluster-us
 
 In cluster-eu, listen for messages sent to target tenant/namespace/topic from cluster-us. If you have prepared the broker clients in Step 7, do:
 ```
@@ -121,7 +121,7 @@ docker exec -it broker-eu bin/pulsar-client --url pulsar://broker-eu:6650 consum
 ```
 
 
-In cluster-us, produce message to the target tenant/namespace/topic. If you have prepared the broker clients in Step 5, do:
+In cluster-us, produce message to the target tenant/namespace/topic. If you have prepared the broker clients in Step 7, do:
 ```
 docker exec -it broker-us bin/pulsar-client produce  my-tenant/my-namespace/my-topic  --messages "hello-from-us" -n 10
 ```
