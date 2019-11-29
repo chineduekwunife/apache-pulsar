@@ -1,5 +1,5 @@
 # Apache Pulsar Geo Replication Demo
-Simulates Geo Replication in a Pulsar Multi-Cluster with global configuration store (global zookeeper).
+Simulates Geo Replication in a Pulsar Multi-Cluster with global configuration store (global zookeeper) and one broker and bookeeper in each cluster.
 
 ### Pulling Latest Updates
 ```
