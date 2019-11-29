@@ -1,0 +1,87 @@
+version: '3'
+services:
+
+#  instances for US cluster
+  bk1-us:
+    hostname: bk1-us
+    container_name: bk1-us
+    image: apachepulsar/pulsar:2.4.1
+    expose: [8000]
+    command: >
+      /bin/bash -c
+      "bin/apply-config-from-env.py conf/bookkeeper.conf
+      && bin/pulsar bookie"
+    environment:
+      clusterName: cluster-us
+      zkServers: zk-global:2181/cluster-us
+#      advertisedAddress: bk1-us:3181
+#      numAddWorkerThreads: 8
+#      useHostNameAsBookieID: "true"
+    networks:
+      - datacenter-network
+
+  bk2-us:
+    hostname: bk2-us
+    container_name: bk2-us
+    image: apachepulsar/pulsar:2.4.1
+    expose: [8000]
+    command: >
+      /bin/bash -c
+      "bin/apply-config-from-env.py conf/bookkeeper.conf
+      && bin/pulsar bookie"
+    environment:
+      clusterName: cluster-us
+      zkServers: zk-global:2181/cluster-us
+    #      advertisedAddress: bk-us:3181
+    #      numAddWorkerThreads: 8
+    #      useHostNameAsBookieID: "true"
+    networks:
+      - datacenter-network
+
+  broker1-us:
+    hostname: broker1-us
+    container_name: broker1-us
+    image: apachepulsar/pulsar:2.4.1
+    command: >
+      /bin/bash -c
+      "bin/apply-config-from-env.py conf/broker.conf
+      && bin/pulsar broker"
+    expose: [8080, 6650]
+    environment:
+      clusterName: cluster-us
+      zookeeperServers: zk-global:2181/cluster-us
+      configurationStoreServers: zk-global:2181
+      managedLedgerDefaultEnsembleSize: 2    # set to match the number of bookeepers in the cluster
+      managedLedgerDefaultWriteQuorum: 2    # set to match the number of bookeepers in the cluster
+      managedLedgerDefaultAckQuorum: 2      # set to match the number of bookeepers in the cluster
+      bookkeeperClientRegionawarePolicyEnabled: "true"
+#      bookkeeperClientReorderReadSequenceEnabled: "true"
+#      webSocketServiceEnabled: "true"
+    networks:
+      - datacenter-network
+
+  broker2-us:
+    hostname: broker2-us
+    container_name: broker2-us
+    image: apachepulsar/pulsar:2.4.1
+    command: >
+      /bin/bash -c
+      "bin/apply-config-from-env.py conf/broker.conf
+      && bin/pulsar broker"
+    expose: [8080, 6650]
+    environment:
+      clusterName: cluster-us
+      zookeeperServers: zk-global:2181/cluster-us
+      configurationStoreServers: zk-global:2181
+      managedLedgerDefaultEnsembleSize: 2    # set to match the number of bookeepers in the cluster
+      managedLedgerDefaultWriteQuorum: 2    # set to match the number of bookeepers in the cluster
+      managedLedgerDefaultAckQuorum: 2      # set to match the number of bookeepers in the cluster
+      bookkeeperClientRegionawarePolicyEnabled: "true"
+    #      bookkeeperClientReorderReadSequenceEnabled: "true"
+    #      webSocketServiceEnabled: "true"
+    networks:
+      - datacenter-network
+
+networks:
+  datacenter-network:
+    external: true
