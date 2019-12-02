@@ -287,7 +287,7 @@ exit
 
 - **Step 10**. Verify messages send and receive. In cluster-eu, create a subscription for the target topic, which will wait to receive messages from cluster-us
 
-In cluster-eu, listen for messages sent to target tenant/namespace/topic from cluster-us. If you have prepared the broker clients in Step 5, do:
+In cluster-eu, listen for messages sent to target tenant/namespace/topic from cluster-us. If you have prepared the broker clients in Step 9, do:
 ```
 docker exec -it broker2-eu bin/pulsar-client consume -s "sub-test" my-tenant/my-namespace/my-topic -n 0
 ```
@@ -299,7 +299,7 @@ docker exec -it broker2-eu bin/pulsar-client --url pulsar://broker2-eu:6650 cons
 ```
 
 
-In cluster-us, produce message to the target tenant/namespace/topic. If you have prepared the broker clients in Step 5, do:
+In cluster-us, produce message to the target tenant/namespace/topic. If you have prepared the broker clients in Step 9, do:
 ```
 docker exec -it broker2-us bin/pulsar-client produce  my-tenant/my-namespace/my-topic  --messages "hello-from-us" -n 10
 ```
