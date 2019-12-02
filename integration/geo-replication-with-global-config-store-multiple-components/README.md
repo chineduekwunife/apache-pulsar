@@ -1,12 +1,6 @@
 # Apache Pulsar Geo Replication Demo
 Simulates Geo Replication in a Pulsar Multi-Cluster with global configuration store (global zookeeper) and two brokers and bookeepers in each cluster.
 
-
-### Pulling Latest Updates
-```
-docker-compose -f pulsar.yml pull
-```
-
 ### Clear Dangling Docker images (run from time to time)
 ```
 docker volume rm $(docker volume ls -qf dangling=true)

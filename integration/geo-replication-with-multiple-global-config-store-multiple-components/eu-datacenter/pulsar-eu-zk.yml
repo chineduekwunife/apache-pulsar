@@ -1,0 +1,55 @@
+version: '3'
+services:
+
+#  EU cluster zookeeper
+  zk1-eu:
+    hostname: zk1-eu
+    container_name: zk1-eu
+    image: apachepulsar/pulsar:2.4.1
+    volumes:
+      - ${PWD}/data-zk1-eu:/pulsar/data
+    command: >
+      /bin/bash -c
+      "bin/apply-config-from-env.py conf/zookeeper.conf
+      && bin/pulsar zookeeper"
+    environment:
+      ZOOKEEPER_SERVERS: zk1-eu
+    expose: [2181, 8000]
+    networks:
+      - datacenter-network
+
+  zk2-eu:
+    hostname: zk2-eu
+    container_name: zk2-eu
+    image: apachepulsar/pulsar:2.4.1
+    volumes:
+      - ${PWD}/data-zk2-eu:/pulsar/data
+    command: >
+      /bin/bash -c
+      "bin/apply-config-from-env.py conf/zookeeper.conf
+      && bin/pulsar zookeeper"
+    environment:
+      ZOOKEEPER_SERVERS: zk2-eu
+    expose: [2181, 8000]
+    networks:
+      - datacenter-network
+
+  zk3-eu:
+    hostname: zk3-eu
+    container_name: zk3-eu
+    image: apachepulsar/pulsar:2.4.1
+    volumes:
+      - ${PWD}/data-zk3-eu:/pulsar/data
+    command: >
+      /bin/bash -c
+      "bin/apply-config-from-env.py conf/zookeeper.conf
+      && bin/pulsar zookeeper"
+    environment:
+      ZOOKEEPER_SERVERS: zk3-eu
+    expose: [2181, 8000]
+    networks:
+      - datacenter-network
+
+networks:
+  datacenter-network:
+    external: true

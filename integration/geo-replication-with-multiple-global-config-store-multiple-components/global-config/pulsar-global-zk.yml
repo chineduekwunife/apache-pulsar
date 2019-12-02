@@ -1,0 +1,55 @@
+version: '3'
+services:
+
+#  Global configuration zookeeper
+  zk1-global:
+    hostname: zk1-global
+    container_name: zk1-global
+    image: apachepulsar/pulsar:2.4.1
+    volumes:
+      - ${PWD}/data-zk1-global:/pulsar/data
+    command: >
+      /bin/bash -c
+      "bin/apply-config-from-env.py conf/global_zookeeper.conf
+      && bin/pulsar configuration-store"
+    environment:
+      ZOOKEEPER_SERVERS: zk1-global
+    expose: [2184, 8000]
+    networks:
+      - datacenter-network
+
+  zk2-global:
+    hostname: zk2-global
+    container_name: zk2-global
+    image: apachepulsar/pulsar:2.4.1
+    volumes:
+      - ${PWD}/data-zk2-global:/pulsar/data
+    command: >
+      /bin/bash -c
+      "bin/apply-config-from-env.py conf/global_zookeeper.conf
+      && bin/pulsar configuration-store"
+    environment:
+      ZOOKEEPER_SERVERS: zk2-global
+    expose: [2184, 8000]
+    networks:
+      - datacenter-network
+
+  zk3-global:
+    hostname: zk3-global
+    container_name: zk3-global
+    image: apachepulsar/pulsar:2.4.1
+    volumes:
+      - ${PWD}/data-zk3-global:/pulsar/data
+    command: >
+      /bin/bash -c
+      "bin/apply-config-from-env.py conf/global_zookeeper.conf
+      && bin/pulsar configuration-store"
+    environment:
+      ZOOKEEPER_SERVERS: zk3-global
+    expose: [2184, 8000]
+    networks:
+      - datacenter-network
+
+networks:
+  datacenter-network:
+    external: true
