@@ -1,0 +1,14 @@
+version: '3'
+services:
+
+  zk:
+    image: zookeeper:3.5.6
+    container_name: zk
+    ports:
+      - "2181:2181"
+    networks:
+      - datacenter-network
+
+networks:
+  datacenter-network:
+    external: true
