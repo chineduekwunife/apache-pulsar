@@ -1,4 +1,4 @@
-# Apache Pulsar Geo Replication Demo
+# Apache Pulsar with External Zookeeper Demo
 Simulates running Pulsar with an already existing zookeeper.
 
 ### Clear Dangling Docker images (run from time to time)
