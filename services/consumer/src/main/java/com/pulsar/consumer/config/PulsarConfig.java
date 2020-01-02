@@ -9,6 +9,9 @@ import org.springframework.retry.support.RetryTemplate;
 import org.springframework.retry.backoff.FixedBackOffPolicy;
 import org.springframework.retry.policy.SimpleRetryPolicy;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 /**
  * Configuration for Apache Pulsar.
  *
@@ -38,5 +41,10 @@ public class PulsarConfig {
         retryTemplate.setRetryPolicy(retryPolicy);
 
         return retryTemplate;
+    }
+
+    @Bean
+    public ExecutorService executorService() {
+        return Executors.newCachedThreadPool();
     }
 }

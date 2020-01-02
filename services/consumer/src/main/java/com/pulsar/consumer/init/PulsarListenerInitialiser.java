@@ -9,6 +9,7 @@ import org.springframework.retry.support.RetryTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
+import java.util.concurrent.ExecutorService;
 
 /**
  * Application Listener used for initializing Pulsar consumers after application startup
@@ -22,13 +23,14 @@ public class PulsarListenerInitialiser implements ApplicationListener<Applicatio
 
     private final Collection<PulsarSubscriber> subscribers;
     private final RetryTemplate retryTemplate;
+    private final ExecutorService executorService;
 
     @Override
     public void onApplicationEvent(ApplicationReadyEvent event) {
         subscribers.stream()
                 .filter(PulsarSubscriber::shouldBeStarted)
                 .forEach(pulsarSubscriber -> retryTemplate.execute(context -> {
-                    pulsarSubscriber.connect();
+                    executorService.submit(pulsarSubscriber);
 
                     return true;
                 }));
