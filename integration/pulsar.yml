@@ -1,4 +1,4 @@
-version: '3'
+version: '3.7'
 services:
 
   watchtower:
@@ -26,7 +26,7 @@ services:
     ports:
       - "6650:6650"
       - "8080:8080"
-    restart: always
+#    restart: always
     networks:
       - docker-network
 
@@ -49,6 +49,8 @@ services:
       - "8081:8081"
     environment:
       PULSAR_SERVICE_URL: pulsar://pulsar:6650
+      PULSAR_ADMIN_URL: http://pulsar:8080
+      KUBERNETES_NAMESPACE: test
     depends_on:
       - pulsar
     networks:
@@ -61,8 +63,11 @@ services:
       - "8082:8082"
     environment:
       PULSAR_SERVICE_URL: pulsar://pulsar:6650
+      PULSAR_ADMIN_URL: http://pulsar:8080
     depends_on:
       - pulsar
+      - pulsar-producer
+      - pulsar-dashboard
     networks:
       - docker-network
 

@@ -48,4 +48,9 @@ public class SensorReadingSubscriber extends PulsarSubscriber {
     public void process(Message msg) {
         log.info("Sensor reading received: {}", ((SensorReading) msg.getValue()).getTemperature());
     }
+
+    @Override
+    public Boolean shouldBeStarted() {
+        return false;
+    }
 }

@@ -28,6 +28,7 @@ dependencies {
     // LOMBOK
     compileOnly("org.projectlombok:lombok:${lombokVersion}")
     annotationProcessor("org.projectlombok:lombok:${lombokVersion}")
+    compile("org.apache.pulsar:pulsar-client-admin:${pulsarVersion}")
 
     // TEST
     testCompile('org.springframework.boot:spring-boot-starter-test')

@@ -48,6 +48,7 @@ dependencies {
     
     // PULSAR
     compile group: 'org.apache.pulsar', name: 'pulsar-client', version: pulsarVersion
+    compile("org.apache.pulsar:pulsar-client-admin:${pulsarVersion}")
 
     // External API
     implementation project(":clients:pulsar-models")
