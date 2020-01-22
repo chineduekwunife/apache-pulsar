@@ -45,4 +45,9 @@ public class ExclusiveSubscriber extends PulsarSubscriber {
         log.info("Message received: {}", new String(msg.getData()));
     }
 
+    @Override
+    public Boolean shouldBeStarted() {
+        return false;
+    }
+
 }

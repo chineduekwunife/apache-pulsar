@@ -30,6 +30,14 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok:${lombokVersion}")
     compile("org.apache.pulsar:pulsar-client-admin:${pulsarVersion}")
 
+    compile group: 'org.springframework', name: 'spring-context', version: '5.2.3.RELEASE'
+
+    compile group: 'org.springframework.boot', name: 'spring-boot', version: '2.1.8.RELEASE'
+
+    compile 'org.springframework.retry:spring-retry:1.2.5.RELEASE'
+
+
+
     // TEST
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }

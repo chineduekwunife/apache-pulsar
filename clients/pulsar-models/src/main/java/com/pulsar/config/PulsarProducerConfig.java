@@ -1,4 +1,4 @@
-package com.pulsar.producer.config;
+package com.pulsar.config;
 
 import com.pulsar.admin.PulsarAdminService;
 import lombok.SneakyThrows;
@@ -8,13 +8,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-/**
- * Configuration for Apache Pulsar.
- *
- * @author Chinedu Ekwunife
- */
 @Configuration
-public class PulsarConfig {
+public class PulsarProducerConfig {
 
     @Bean
     @SneakyThrows

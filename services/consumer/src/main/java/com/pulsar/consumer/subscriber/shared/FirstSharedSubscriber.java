@@ -1,13 +1,11 @@
 package com.pulsar.consumer.subscriber.shared;
 
+import com.pulsar.admin.PulsarAdminService;
 import com.pulsar.consumer.subscriber.PulsarSubscriber;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.pulsar.client.api.Consumer;
-import org.apache.pulsar.client.api.Message;
-import org.apache.pulsar.client.api.PulsarClient;
-import org.apache.pulsar.client.api.SubscriptionType;
+import org.apache.pulsar.client.api.*;
 import org.springframework.stereotype.Component;
 
 import static java.util.Objects.isNull;
@@ -27,7 +25,10 @@ import static com.pulsar.model.constants.Subscription.SHARED_SUBSCRIPTION;
 @RequiredArgsConstructor
 public class FirstSharedSubscriber extends PulsarSubscriber {
 
+    private static final String APP = "sample-app";
+
     private final PulsarClient pulsarClient;
+    private final PulsarAdminService pulsarAdminService;
 
     private Consumer consumer;
 
@@ -35,12 +36,15 @@ public class FirstSharedSubscriber extends PulsarSubscriber {
     @SneakyThrows
     public Consumer consumer() {
         if (isNull(consumer)) {
+            String pulsarTopic = pulsarAdminService.topic(MY_TOPIC, APP);
             consumer = pulsarClient.newConsumer()
-                    .topic(MY_TOPIC)
+                    .topic(pulsarTopic)
                     .subscriptionName(SHARED_SUBSCRIPTION)
                     .subscriptionType(SubscriptionType.Shared)
                     .subscribe();
         }
+
+
 
         return consumer;
     }
@@ -50,8 +54,11 @@ public class FirstSharedSubscriber extends PulsarSubscriber {
         log.info("Message received: {}", new String(msg.getData()));
     }
 
+
+
     @Override
     public Boolean shouldBeStarted() {
-        return false;
+        return true;
     }
+
 }

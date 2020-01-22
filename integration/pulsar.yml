@@ -50,7 +50,7 @@ services:
     environment:
       PULSAR_SERVICE_URL: pulsar://pulsar:6650
       PULSAR_ADMIN_URL: http://pulsar:8080
-      KUBERNETES_NAMESPACE: test
+      KUBERNETES_NAMESPACE: local
     depends_on:
       - pulsar
     networks:
@@ -64,6 +64,7 @@ services:
     environment:
       PULSAR_SERVICE_URL: pulsar://pulsar:6650
       PULSAR_ADMIN_URL: http://pulsar:8080
+      KUBERNETES_NAMESPACE: local
     depends_on:
       - pulsar
       - pulsar-producer

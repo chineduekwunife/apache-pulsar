@@ -26,6 +26,7 @@ public class WebService {
     private Logger logger = LoggerFactory.getLogger(WebService.class);
 
     public static final String RESOURCE = "/ws";
+    private static final String APP = "sample-app";
 
     private final ProducerService producerService;
     private final PulsarAdminService pulsarAdminService;
@@ -34,11 +35,11 @@ public class WebService {
     private Boolean messageBusConnect;
 
     @GetMapping("/pulsar")
-    public ResponseEntity sendToMessageBus() {
+    public ResponseEntity sendToMessageBus() throws PulsarAdminException {
         if (messageBusConnect) {
-            producerService.sendMessage(new SensorReading(2.0F), SENSOR_TOPIC, JSONSchema.of(SensorReading.class));
-            producerService.sendMessage("My message", MY_TOPIC, Schema.STRING);
-            producerService.sendMessage("My second message", MY_SECOND_TOPIC, Schema.STRING);
+            producerService.sendMessage(new SensorReading(2.0F), pulsarAdminService.topic(SENSOR_TOPIC, APP), JSONSchema.of(SensorReading.class));
+            producerService.sendMessage("My message", pulsarAdminService.topic(MY_TOPIC, APP), Schema.STRING);
+            producerService.sendMessage("My second message", pulsarAdminService.topic(MY_SECOND_TOPIC, APP), Schema.STRING);
         }
 
         return ResponseEntity.ok("");
